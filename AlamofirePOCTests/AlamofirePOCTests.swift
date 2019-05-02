@@ -10,25 +10,35 @@ import XCTest
 @testable import AlamofirePOC
 
 class AlamofirePOCTests: XCTestCase {
+    
+    var clientServices: ClientServices!
+    var retrievedData: [String: Any]!
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        clientServices = ClientServices.shared
+        retrievedData = nil
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        clientServices = nil
+        retrievedData = nil
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testAuthenticateUser() {
+        let mockUserRouter = MockUserRouter.authenticateUser(email: "joe.doe@email.com", password: "Test1234")
+        clientServices.authenticateUser(configuration: mockUserRouter as APIConfiguration) { session, _ in
+            self.retrievedData = session
         }
+        
+        let predicate = NSPredicate(format: "retrievedData != nil")
+        let promise = expectation(for: predicate, evaluatedWith: self, handler: nil)
+        let response = XCTWaiter.wait(for: [promise], timeout: 5.0)
+        guard response == XCTWaiter.Result.completed else {
+            XCTAssert(false, "The call to get the URL ran into some other error")
+            return
+        }
+        
+        XCTAssertNotNil(retrievedData, "No data recived from the server")
     }
 
 }

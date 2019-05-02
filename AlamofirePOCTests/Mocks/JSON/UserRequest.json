@@ -1,0 +1,13 @@
+{
+    "data": {
+        "token": "b04asd18-7335-15nb-1a04-e457gndm1",
+        "userInfo": {
+            "encryptedUserId": "435mb03400-1db4-4d4nf533-2mg5-4mfkasdk5",
+            "firstName": "John",
+            "lastName": "Doe",
+            "email": "john.doe@email.com",
+            "isEmailVerified": true,
+            "profileImgUrl": "test_url"
+        }
+    }
+}
